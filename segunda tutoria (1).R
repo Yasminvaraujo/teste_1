@@ -160,6 +160,13 @@ summary(mod)
 erro=resid(mod)
 plot(erro)
 
+attach(precogas33333)
+mod333 <- lm(st_lpme_rev ~ st_lpme_dist+st_lcambio,precogas)
+
+summary(mod333)
+
+erro333=resid(mod333)
+plot(erro333)
 
 #teste Engle-Granger
 
@@ -350,6 +357,15 @@ summary(jotest)
 ###############################################################################################################
 
 #agora vou fazer algo diferente
+
+erro<- ts(erro)
+vecm=VAR(serie,type="none",p=2,exogen=erro[2:224]) #igual ao var mas devemos acrescentar o erro como ex?geno
+vecm
+
+
+serial.test(vecm, lags.pt = 8, type = "PT.adjusted")
+
+#agora vou fazer algo mais diferente ainda
 
 erro<- ts(erro)
 vecm=VAR(serie,type="none",p=2,exogen=erro[2:224]) #igual ao var mas devemos acrescentar o erro como ex?geno
