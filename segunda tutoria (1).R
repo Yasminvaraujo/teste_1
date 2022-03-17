@@ -10,7 +10,7 @@ install.packages("readxl")
 
 library(readxl)
 
-precogas <- read_excel("~/Faculdade/Sexto período/Econometria 3/dados.xls")
+precogas <- read_excel("~/Faculdade/Sexto per?odo/Econometria 3/dados.xls")
 
 precogas$lpme_dist<-log(precogas$pme_dist)
 precogas$lpme_rev<-log(precogas$pme_rev)
@@ -68,8 +68,8 @@ st_lcambio_diff <- diff(st_lcambio, differences=1)
 
 #vamos testar a raiz unitaria para cada serie em n?vel e em primeira diferenca
 #usaremos o teste Dickey-Fuller Aumentado (ADF)
-#O teste ADF testa a hip?tese nula de se uma raiz unit?ria est? presente em um modelo autorregressivo. 
-#A hip?tese alternativa ? diferente dependendo de qual vers?o do teste ? usada: 
+#O teste ADF testa a hip?tese nula de se uma raiz unit?ria est? presente em um modelo autorregressivo.
+#A hip?tese alternativa ? diferente dependendo de qual vers?o do teste ? usada:
 #geralmente ? estacion?rio, estacion?rio com intercepto ("drift") ou estacion?rio com tend?ncia ("trend").
 
 ### Preco medio de distribuicao de gasolina
@@ -81,7 +81,7 @@ summary(ur.df(st_lpme_dist, type='none', selectlags = "AIC")) #usa-se o criterio
 #Value of test-statistic is: 1.1773 > -1.95 = Critical value at 5% (Nao rejeitamos H0 a 5%), logo a serie  nao e estacionaria I(1)
 
 summary(ur.df(st_lpme_dist, type='drift', selectlags = "AIC")) #teste com intercepto
-#Value of test-statistic is: -2.2972 4.4893  
+#Value of test-statistic is: -2.2972 4.4893
 #-2.2972>-2.88, logo nao rejeita H0 a 5% de ter raiz unitaria I(1)
 
 
@@ -91,17 +91,17 @@ summary(ur.df(st_lpme_dist, type='trend', selectlags = "AIC")) #teste com interc
 
 
 #Zivot & Andrews Unit Root Test
-#a hip?tese nula ? que a s?rie tem raiz unit?ria com quebra estrutural 
+#a hip?tese nula ? que a s?rie tem raiz unit?ria com quebra estrutural
 #hip?tese alternativa de que s?o estacion?rias com quebras.
 #a hip?tese alternativa ? um processo estacion?rio de tend?ncia que permite uma quebra ?nica no n?vel, na tend?ncia ou em ambos
-summary(ur.za(st_lpme_dist, model="both")) 
+summary(ur.za(st_lpme_dist, model="both"))
 #Teststatistic: -4.6>-5,08, logo n?o rejeita H0 a 5% de raiz unit?ria com quebra estrutural
 
 
 ### Preco m?dio de distribuicao em diferenca
 summary(ur.df(st_lpme_dist_diff, type='none', selectlags = "AIC")) #I(0)
-summary(ur.df(st_lpme_dist_diff, type='drift', selectlags = "AIC")) 
-summary(ur.df(st_lpme_dist_diff, type='trend', selectlags = "AIC")) 
+summary(ur.df(st_lpme_dist_diff, type='drift', selectlags = "AIC"))
+summary(ur.df(st_lpme_dist_diff, type='trend', selectlags = "AIC"))
 
 summary(ur.za(st_lpme_dist_diff, model="both")) #Zivot & Andrews Unit Root Test
 
@@ -129,6 +129,10 @@ summary(ur.df(st_lcambio, type='trend', selectlags = "AIC"))
 
 summary(ur.za(st_lcambio, model="both")) #Zivot & Andrews Unit Root Test
 
+summary(ur.df(st_lcambio, type='none', selectlags = "BIC"))
+summary(ur.df(st_lcambio, type='drift', selectlags = "BIC"))
+summary(ur.df(st_lcambio, type='trend', selectlags = "BIC"))
+
 
 ### Cambio em diferenca
 summary(ur.df(st_lcambio_diff, type='none', selectlags = "AIC"))
@@ -144,8 +148,8 @@ summary(ur.za(st_lcambio_diff, model="both", lag=2)) #Zivot & Andrews Unit Root 
 ### As s?ries cointegram? ###
 #############################
 
-#Metodo Engle e Granger 
-#Passo 1: vimos anteriormente que as series em nivel n?o sao estacionarias 
+#Metodo Engle e Granger
+#Passo 1: vimos anteriormente que as series em nivel n?o sao estacionarias
 #Passo 2: Vamos estimar a equacao lpme_rev = lpme_dist + lcambio + et, para ver se os res?duos s?o estacionarios
 
 attach(precogas)
@@ -168,7 +172,7 @@ eg=ur.df(erro) #teste de raiz unitaria no erro
 summary(eg)
 # H0: Nao ha cointegracao
 #Value of test-statistic is: -4.5738 < -3,368 (tabela do teste Engle-Granger) (a confirmar)-> rejeita H0 a 5% I(0)
-#Valor tabelado: 
+#Valor tabelado:
 #Ao testar em uma tabela apropriada com valores cr?ticos para o teste de cointegracao de Engle e Granger rejeitamos H0
 #Como a estatistica do teste e menor que o valor critico,rejeitamos H0, indicando que h? cointegracao
 
@@ -203,8 +207,8 @@ View(explicativas)
 library(faraway)
 vif(explicativas) #Variance Inflation Factors - VIF #http://www.est.ufmg.br/portal/arquivos/rts/RT-SE-2009.pdf (pg.49)
 
-#precogas.lpme_rev   precogas.lcambio 
-#     1.265846          1.265846 
+#precogas.lpme_rev   precogas.lcambio
+#     1.265846          1.265846
 
 #Draper e Smith (1998) recomendam que valores de VIF maiores do que 10 podem causar s?rios problemas na estima??o dos coeficientes de regress?o
 #Observa-se valores muito elevados para VIF1 e VIF2, confirmando a presen?a da multicolinearidade.
@@ -221,12 +225,12 @@ serie=cbind(st_lpme_rev_diff,st_lpme_dist_diff, st_lcambio_diff) # variaveis
 library(vars)
 
 VARselect(serie,lag.max = 6) # total de lags necessarios para minimizar os 4 criterios
-# 
+#
 
 # (AKaike, Hannan-Quinn, Schwarz, e Final Prediction Error)
 
-# AIC(n)  HQ(n)  SC(n)  FPE(n) 
-#  2       1      1      2 
+# AIC(n)  HQ(n)  SC(n)  FPE(n)
+#  2       1      1      2
 
 # Neste caso, utilizamos 2 lags
 
@@ -260,7 +264,7 @@ ir.1lp = irf(var.1, impulse = "st_lpme_dist_diff", response = "st_lpme_rev_diff"
 plot(ir.1lp)#efeito culmulativo/longo prazo
 
 ir.2 = irf(var.1, impulse = "st_lcambio_diff", response = "st_lpme_rev_diff", n.ahead = 20, ortho = FALSE)
-plot(ir.2) 
+plot(ir.2)
 
 ir.2lp = irf(var.1, impulse = "st_lcambio_diff", response = "st_lpme_rev_diff", n.ahead = 20, ortho = FALSE, cumulative = TRUE)
 plot(ir.2lp)#efeito culmulativo/longo prazo
@@ -274,7 +278,7 @@ plot(ir.2lp)#efeito culmulativo/longo prazo
 #Teste de Granger-Causalidade (Pergunta-se se uma variavel e capaz de prever outra e em que condicoes)
 #st_lpme_rev_diff ajuda a prever st_lpme_dist_diff st_lcambio_diff?
 #H0: st_lpme_rev_diff do not Granger-cause st_lpme_dist_diff e st_lcambio_diff
-causality(var.1,cause='st_lpme_rev_diff') 
+causality(var.1,cause='st_lpme_rev_diff')
 causality(var.aic,cause='st_lpme_rev_diff')
 
 #projecao
@@ -320,7 +324,7 @@ serial.test(vecm, lags.pt = 8, type = "PT.adjusted") #p-value = 0.1124>0,05 -> b
 ###Teste De Johansen###
 #######################
 
-# H0: somente os r+1  autovalores s?o diferentes de zero, isto e, 
+# H0: somente os r+1  autovalores s?o diferentes de zero, isto e,
 # existe r s?ries temporais cointegradas, isto e, nao cointegracao (para r=0).
 
 rev_var=cbind(st_lpme_dist,st_lpme_rev, st_lcambio)
