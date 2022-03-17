@@ -348,3 +348,12 @@ summary(jotest)
 
 # como nao rejeitou r<=1 e rejeitou r=0, logo existe pelo menos uma serie cointegrada..
 ###############################################################################################################
+
+#agora vou fazer algo diferente
+
+erro<- ts(erro)
+vecm=VAR(serie,type="none",p=2,exogen=erro[2:224]) #igual ao var mas devemos acrescentar o erro como ex?geno
+vecm
+
+
+serial.test(vecm, lags.pt = 8, type = "PT.adjusted")
